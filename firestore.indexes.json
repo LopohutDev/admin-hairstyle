@@ -1,0 +1,113 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "mens_haircut",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "suitable_for_face_shape",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "user_choices",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "mens_haircut_history",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "user_faceshape",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "user_hair_type",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "user_hair_size",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "user_hair_color",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "haircut_choices",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "user_id",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "women_haircut",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "suitable_for_face_shape",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "user_choices",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "women_haircut_history",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "user_faceshape",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "user_hair_type",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "user_hair_size",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "user_hair_color",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "user_id",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "haircut_choices",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": [
+    {
+      "collectionGroup": "mens_haircut_history",
+      "fieldPath": "user_faceshape",
+      "ttl": false,
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "order": "DESCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "arrayConfig": "CONTAINS",
+          "queryScope": "COLLECTION"
+        }
+      ]
+    }
+  ]
+}
