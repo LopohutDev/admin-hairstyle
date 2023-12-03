@@ -2,11 +2,19 @@
 const express = require("express");
 const admin = require("firebase-admin");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 const app = express();
 
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(
+  bodyParser.urlencoded({
+    limit: "50mb",
+    extended: true,
+    parameterLimit: 50000,
+  })
+);
 
 // Initialize Firebase Admin SDK
 const serviceAccount = require("./serviceAccountKey.json");
@@ -101,15 +109,28 @@ app.delete("/api/users/:uid", async (req, res) => {
 // Endpoint to add a new user
 app.post("/api/users", async (req, res) => {
   try {
-    const { fullName, role, age, gender, phoneNumber, photoBase64, dob } =
-      req.body;
+    const {
+      fullName,
+      role,
+      age,
+      gender,
+      phoneNumber,
+      photoBase64,
+      dob,
+      email,
+      password,
+    } = req.body;
 
     // Create the user in Firebase Authentication
     const userRecord = await admin.auth().createUser({
+      email,
+      password,
       displayName: fullName,
     });
 
     const { uid } = userRecord;
+
+    console.log(userRecord);
 
     // // Add additional user data to your database (e.g., User_Profiling)
     const db = admin.database();
@@ -132,7 +153,11 @@ app.post("/api/users", async (req, res) => {
       });
 
       // Get the download URL for the photo
-      profilePicUri = await photoRef.getDownloadURL();
+      const [url] = await photoRef.getSignedUrl({
+        action: "read",
+        expires: "03-09-2491",
+      });
+      profilePicUri = url;
     }
 
     // Add user details to User_Profiling
@@ -160,7 +185,6 @@ app.post("/api/users", async (req, res) => {
 app.put("/api/users/:uid", async (req, res) => {
   try {
     const uid = req.params.uid;
-
     const { fullName, role, gender, phoneNumber, photoBase64 } = req.body;
 
     // Update the user in Firebase Authentication
@@ -189,7 +213,11 @@ app.put("/api/users/:uid", async (req, res) => {
       });
 
       // Get the download URL for the photo
-      profilePicUri = await photoRef.getDownloadURL();
+      const [url] = await photoRef.getSignedUrl({
+        action: "read",
+        expires: "03-09-2491",
+      });
+      profilePicUri = url;
     }
 
     // Update user details in User_Profiling
@@ -198,7 +226,7 @@ app.put("/api/users/:uid", async (req, res) => {
       role: role,
       gender: gender,
       phonenumber: phoneNumber,
-      profilePicUri: profilePicUri || req.body.profilePicUri, // Use the new download URL or keep the existing one
+      profilePicUri: profilePicUri, // Use the new download URL or keep the existing one
       // Update other user details as needed
     });
 
@@ -206,7 +234,9 @@ app.put("/api/users/:uid", async (req, res) => {
     res.status(200).json({ message: "User updated successfully." });
   } catch (error) {
     console.error("Error updating user:", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({ error: "Internal Server Error", errorMessage: error });
   }
 });
 

@@ -31,7 +31,7 @@ import { transformToValidDate } from "@/lib/helpers";
 import { ChangeEvent, useState } from "react";
 
 interface EditUserForm {
-  email: string;
+  email?: string;
   fullName: string;
   role: string;
   gender: string;
@@ -43,7 +43,7 @@ interface EditUserForm {
 type EditUserProps = DialogProps & { user?: User };
 
 const formSchema = z.object({
-  email: z.string({ required_error: "Email is Required" }),
+  email: z.string().optional(),
   fullName: z.string({ required_error: "Full Name is Required" }),
   role: z.string(),
   gender: z.string(),
@@ -87,6 +87,7 @@ const EditUser = ({ open, onOpenChange, user }: EditUserProps) => {
                 <div>
                   <div className="mt-2">
                     <FormField
+                      disabled
                       control={form.control}
                       name="email"
                       render={({ field }) => (
@@ -260,7 +261,7 @@ const EditUser = ({ open, onOpenChange, user }: EditUserProps) => {
                     type="submit"
                     className="w-full mt-5 bg-gray-500 hover:bg-gray-600"
                   >
-                    Add User
+                    Edit User
                   </Button>
                   <Button
                     type="submit"

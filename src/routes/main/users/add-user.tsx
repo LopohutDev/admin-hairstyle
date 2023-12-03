@@ -212,7 +212,7 @@ const AddUser = ({ open, onOpenChange }: AddUserModalProps) => {
                       name="photoBase64"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Date of Birth</FormLabel>
+                          <FormLabel>Upload Photo</FormLabel>
                           <FormControl>
                             <Input
                               {...field}

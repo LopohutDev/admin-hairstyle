@@ -25,6 +25,7 @@ const UsersList = () => {
   useEffect(() => {
     if (openSuccessModal) {
       setOpenEditUserModal(false);
+      setOpenDeleteUserModal(false);
     }
   }, [openSuccessModal]);
 
@@ -103,6 +104,7 @@ const UsersList = () => {
                         }}
                         openDeleteModal={() => {
                           setSelectedUser(user);
+                          setOpenDeleteUserModal(true);
                         }}
                       />
                     </td>
